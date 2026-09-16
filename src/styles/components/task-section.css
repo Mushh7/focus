@@ -1,0 +1,64 @@
+/* ==========================================================================
+   Task section
+   The tinted Today / Upcoming / Later cards. Each section sets its own tint
+   through local custom properties so the rest of the rules stay shared.
+   ========================================================================== */
+
+.task-section {
+  padding: var(--space-5) var(--space-4) var(--space-4);
+  background-color: var(--section-bg);
+  border-radius: var(--radius-xl);
+}
+
+.task-section--today {
+  --section-bg: var(--color-section-today-bg);
+  --section-badge-bg: var(--color-section-today-badge-bg);
+  --section-badge-fg: var(--color-section-today-badge-fg);
+}
+
+.task-section--upcoming {
+  --section-bg: var(--color-section-upcoming-bg);
+  --section-badge-bg: var(--color-section-upcoming-badge-bg);
+  --section-badge-fg: var(--color-section-upcoming-badge-fg);
+}
+
+.task-section--later {
+  --section-bg: var(--color-section-later-bg);
+  --section-badge-bg: var(--color-section-later-badge-bg);
+  --section-badge-fg: var(--color-section-later-badge-fg);
+}
+
+.task-section__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-inline: var(--space-2);
+}
+
+.task-section__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.task-section__description {
+  margin-top: var(--space-1);
+  padding-inline: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-subtle);
+}
+
+.task-section__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--space-4);
+}
+
+@media (max-width: 560px) {
+  .task-section__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

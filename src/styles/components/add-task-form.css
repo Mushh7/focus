@@ -1,0 +1,56 @@
+/* ==========================================================================
+   Add task form
+   The inline composer that drops into a section when "Add Task" is pressed.
+   ========================================================================== */
+
+.add-task {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 8rem 8rem;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+  padding: var(--space-5);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-row);
+  animation: add-task-in var(--transition-base) both;
+}
+
+.add-task__field--wide,
+.add-task__title {
+  grid-column: 1 / -1;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.add-task__actions {
+  display: flex;
+  grid-column: 1 / -1;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+.add-task__error {
+  grid-column: 1 / -1;
+  font-size: var(--text-xs);
+  color: var(--color-priority-high-fg);
+}
+
+@keyframes add-task-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .add-task {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,25 @@
+/* ==========================================================================
+   Avatar + header quote
+   The pair that sits above the focus card on the page background.
+   ========================================================================== */
+
+.header-quote {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: right;
+}
+
+.avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent-800);
+  background-color: var(--color-accent-100);
+  border: 1px solid var(--color-accent-200);
+  border-radius: var(--radius-pill);
+}

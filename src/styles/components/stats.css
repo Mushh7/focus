@@ -1,0 +1,100 @@
+/* ==========================================================================
+   Stats panel
+   Tiles plus a seven-day bar chart, shown behind the Stats tab.
+   ========================================================================== */
+
+.stats {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.stat-tile {
+  padding: var(--space-5);
+  background-color: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.stat-tile__value {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+}
+
+.stat-tile__label {
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+}
+
+/* --- Weekly chart -------------------------------------------------------- */
+
+.chart {
+  padding: var(--space-5);
+  background-color: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.chart__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.chart__title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+}
+
+.chart__meta {
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+}
+
+.chart__bars {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-end;
+  height: 7rem;
+  margin-top: var(--space-5);
+}
+
+.chart__column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.chart__bar {
+  width: 100%;
+  min-height: 4px;
+  height: var(--bar-height);
+  background-color: var(--color-accent-200);
+  border-radius: var(--radius-xs);
+  transition: height var(--transition-base);
+}
+
+.chart__column--today .chart__bar {
+  background-color: var(--color-accent-500);
+}
+
+.chart__day {
+  font-size: var(--text-2xs);
+  color: var(--color-text-subtle);
+}

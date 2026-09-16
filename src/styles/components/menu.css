@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Menu
+   The small popover behind the row "..." action and the session label.
+   ========================================================================== */
+
+.menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.menu__panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: 20;
+  min-width: 11rem;
+  padding: var(--space-2);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-popover);
+  animation: menu-in var(--transition-fast) both;
+}
+
+.menu__panel--center {
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.menu__label {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-subtle);
+  text-transform: uppercase;
+}
+
+.menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  text-align: left;
+  border-radius: var(--radius-xs);
+  transition: background-color var(--transition-fast);
+}
+
+.menu__item:hover {
+  background-color: var(--color-surface-muted);
+}
+
+.menu__item svg {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-text-subtle);
+}
+
+.menu__item[aria-checked="true"] {
+  font-weight: var(--weight-semibold);
+  color: var(--color-accent-800);
+  background-color: var(--color-accent-50);
+}
+
+.menu__item--danger {
+  color: var(--color-priority-high-fg);
+}
+
+.menu__item--danger svg {
+  color: currentcolor;
+}
+
+.menu__separator {
+  height: 1px;
+  margin: var(--space-2) var(--space-1);
+  background-color: var(--color-border);
+  border: 0;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+  }
+}

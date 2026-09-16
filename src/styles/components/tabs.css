@@ -1,0 +1,59 @@
+/* ==========================================================================
+   Tabs
+   The Focus / Break / Stats segmented control at the top of the focus card.
+   ========================================================================== */
+
+.tabs {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+}
+
+.tabs__tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  height: var(--control-height-sm);
+  padding-inline: var(--space-4);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.tabs__tab:hover {
+  color: var(--color-text);
+  background-color: var(--color-surface-muted);
+}
+
+.tabs__tab[aria-selected="true"] {
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  background-color: var(--color-accent-50);
+}
+
+.tabs__tab[aria-selected="true"] .tabs__icon {
+  color: var(--color-accent-600);
+}
+
+.tabs__icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-text-subtle);
+}
+
+@media (max-width: 400px) {
+  .tabs__tab {
+    padding-inline: var(--space-2);
+    font-size: var(--text-sm);
+  }
+}

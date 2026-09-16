@@ -1,0 +1,55 @@
+/* ==========================================================================
+   Duration chips
+   The 25 / 50 / 90 / Custom presets under the start button.
+   ========================================================================== */
+
+.chips-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.chip {
+  flex: 1;
+  min-width: 4.25rem;
+  height: var(--control-height-sm);
+  padding-inline: var(--space-4);
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  background-color: var(--color-surface-muted);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.chip:hover {
+  color: var(--color-text);
+  background-color: var(--color-surface-sunken);
+}
+
+.chip[aria-pressed="true"] {
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  background-color: var(--color-accent-50);
+}
+
+.chips__custom {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-end;
+  width: 100%;
+}
+
+.chips__custom .field {
+  flex: 1;
+}
+
+.chips__custom .field__input {
+  height: var(--control-height-sm);
+}

@@ -1,0 +1,41 @@
+/* ==========================================================================
+   Greeting
+   Top of the task column: time-of-day greeting, sub-line and today's date.
+   ========================================================================== */
+
+.greeting {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.greeting__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+}
+
+.greeting__subtitle {
+  margin-top: var(--space-2);
+  font-size: var(--text-base);
+  color: var(--color-text-subtle);
+}
+
+.greeting__date {
+  flex: none;
+  padding-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 560px) {
+  .greeting {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .greeting__date {
+    padding-top: 0;
+  }
+}

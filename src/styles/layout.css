@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Layout
+   The app shell: page padding, the two-column grid and the column stacks.
+   ========================================================================== */
+
+.app {
+  min-height: 100vh;
+  padding: var(--layout-gutter);
+}
+
+.app__grid {
+  display: grid;
+  grid-template-columns: minmax(0, var(--layout-tasks-fraction)) minmax(0, 1fr);
+  gap: var(--layout-column-gap);
+  align-items: stretch;
+  max-width: var(--layout-max-width);
+  margin-inline: auto;
+}
+
+/* Left column: one tall card holding the greeting and the task sections. */
+.app__tasks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
+  padding: var(--space-7);
+}
+
+/* Right column: a slim top bar sitting on the page, then the focus card. */
+.app__aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.app__aside-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-4);
+  min-height: var(--layout-header-height);
+  padding-inline: var(--space-2);
+}
+
+.app__aside-card {
+  flex: 1;
+  min-width: 0;
+}
+
+.section-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+@media (max-width: 900px) {
+  :root {
+    --layout-gutter: var(--space-5);
+    --ring-size: 12rem;
+  }
+
+  .app__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* On one column the greeting leads, so the quote bar moves below the card. */
+  .app__aside {
+    flex-direction: column-reverse;
+  }
+
+  .app__aside-bar {
+    justify-content: center;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --layout-gutter: var(--space-4);
+    --text-2xl: 1.375rem;
+    --text-timer: 2.375rem;
+    --ring-size: 11rem;
+  }
+
+  .app__tasks {
+    padding: var(--space-5);
+  }
+}

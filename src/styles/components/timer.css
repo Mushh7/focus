@@ -1,0 +1,127 @@
+/* ==========================================================================
+   Focus timer
+   The card body: progress ring, digital readout, session label, task input
+   and the primary start/pause control.
+   ========================================================================== */
+
+.focus-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+}
+
+.focus-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* --- Progress ring ------------------------------------------------------- */
+
+.timer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.timer__dial {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--ring-size);
+  height: var(--ring-size);
+  margin: var(--space-3) auto var(--space-1);
+}
+
+.timer__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer__ring-track {
+  fill: none;
+  stroke: var(--color-surface-sunken);
+  stroke-width: var(--ring-track-width);
+}
+
+.timer__ring-progress {
+  fill: none;
+  stroke: var(--color-accent-400);
+  stroke-linecap: round;
+  stroke-width: var(--ring-progress-width);
+  transition: stroke-dashoffset var(--transition-slow) linear;
+}
+
+.timer__readout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.timer__time {
+  font-size: var(--text-timer);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1;
+  color: var(--color-text);
+}
+
+/* --- Session label menu -------------------------------------------------- */
+
+.timer__mode {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.timer__mode:hover {
+  color: var(--color-text);
+  background-color: var(--color-surface-muted);
+}
+
+.timer__mode svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  transition: transform var(--transition-fast);
+}
+
+.timer__mode[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.timer__mode-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* --- Controls ------------------------------------------------------------ */
+
+.timer__controls {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.timer__controls .button--primary {
+  flex: 1;
+}
+
+.timer__hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  text-align: center;
+}

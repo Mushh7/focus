@@ -1,0 +1,142 @@
+/* ==========================================================================
+   Design tokens
+   The single source of truth for colour, type, space, radius and motion.
+   Every other stylesheet consumes these variables instead of raw values.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* --- Palette: neutrals ------------------------------------------------ */
+  --color-page: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f7f8fa;
+  --color-surface-sunken: #f2f3f7;
+  --color-border: #edeef3;
+  --color-border-strong: #dde0e8;
+  --color-border-interactive: #cbd2dd;
+
+  --color-text: #0f1729;
+  --color-text-muted: #6a7488;
+  --color-text-subtle: #97a0b0;
+  --color-text-inverse: #ffffff;
+
+  /* --- Palette: green accent -------------------------------------------- */
+  --color-accent-900: #0d4535;
+  --color-accent-800: #145544;
+  --color-accent-700: #1b6b57;
+  --color-accent-600: #23795f;
+  --color-accent-500: #3f9c78;
+  --color-accent-400: #62b692;
+  --color-accent-200: #cfe8da;
+  --color-accent-100: #dcefe4;
+  --color-accent-50: #e8f4ee;
+
+  /* --- Palette: priority levels ----------------------------------------- */
+  --color-priority-high-bg: #fde0e1;
+  --color-priority-high-fg: #b8281f;
+  --color-priority-medium-bg: #fdf0d2;
+  --color-priority-medium-fg: #8a5a10;
+  --color-priority-low-bg: #e4f1ea;
+  --color-priority-low-fg: #116a4b;
+
+  /* --- Palette: task sections (tinted cards + count badges) -------------- */
+  --color-section-today-bg: #fdf2f4;
+  --color-section-today-badge-bg: #fbdfdf;
+  --color-section-today-badge-fg: #c2261f;
+
+  --color-section-upcoming-bg: #ecf5fd;
+  --color-section-upcoming-badge-bg: #d9e8fb;
+  --color-section-upcoming-badge-fg: #1a5fb0;
+
+  --color-section-later-bg: #eef7f2;
+  --color-section-later-badge-bg: #d8ecdf;
+  --color-section-later-badge-fg: #13674b;
+
+  /* --- Typography -------------------------------------------------------- */
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --text-2xs: 0.6875rem; /* 11px */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.8125rem; /* 13px */
+  --text-base: 0.875rem; /* 14px */
+  --text-md: 0.9375rem; /* 15px */
+  --text-lg: 1.0625rem; /* 17px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.625rem; /* 26px */
+  --text-timer: 2.875rem; /* 46px */
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-normal: 1.5;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+
+  /* --- Spacing scale ----------------------------------------------------- */
+  --space-1: 0.25rem; /* 4px  */
+  --space-2: 0.375rem; /* 6px  */
+  --space-3: 0.5rem; /* 8px  */
+  --space-4: 0.75rem; /* 12px */
+  --space-5: 1rem; /* 16px */
+  --space-6: 1.25rem; /* 20px */
+  --space-7: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-9: 2.5rem; /* 40px */
+  --space-10: 3rem; /* 48px */
+
+  /* --- Radii ------------------------------------------------------------- */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 22px;
+  --radius-pill: 999px;
+
+  /* --- Elevation --------------------------------------------------------- */
+  --shadow-card: 0 1px 2px rgba(15, 23, 41, 0.04),
+    0 18px 40px -22px rgba(15, 23, 41, 0.16);
+  --shadow-row: 0 1px 2px rgba(15, 23, 41, 0.05);
+  --shadow-raised: 0 10px 24px -14px rgba(15, 23, 41, 0.28);
+  --shadow-accent: 0 10px 22px -12px rgba(27, 107, 87, 0.55);
+  --shadow-popover: 0 12px 32px -10px rgba(15, 23, 41, 0.22);
+
+  /* --- Focus ring -------------------------------------------------------- */
+  --focus-ring-color: rgba(35, 121, 95, 0.45);
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+
+  /* --- Motion ------------------------------------------------------------ */
+  --transition-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* --- Layout ------------------------------------------------------------ */
+  --layout-max-width: 1040px;
+  --layout-gutter: var(--space-7);
+  --layout-column-gap: var(--space-5);
+  --layout-tasks-fraction: 1.62fr;
+  --layout-header-height: 3.5rem;
+
+  /* --- Component sizing -------------------------------------------------- */
+  --control-height-sm: 2.125rem; /* 34px */
+  --control-height-md: 2.75rem; /* 44px */
+  --control-height-lg: 3rem; /* 48px */
+  --checkbox-size: 1.375rem; /* 22px */
+  --icon-button-size: 1.75rem; /* 28px */
+  --avatar-size: 2.625rem; /* 42px */
+
+  /* Ring stroke widths are in SVG user units (100-unit viewBox), so they
+     scale with --ring-size instead of needing a second breakpoint. */
+  --ring-size: 13.5rem; /* 216px */
+  --ring-track-width: 2.4;
+  --ring-progress-width: 4.6;
+}

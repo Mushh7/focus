@@ -1,0 +1,20 @@
+/* ==========================================================================
+   Badge
+   Small round counters next to a section title. Colours come from the
+   section tint so one rule serves all three sections.
+   ========================================================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding-inline: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--section-badge-fg, var(--color-text-muted));
+  background-color: var(--section-badge-bg, var(--color-surface-sunken));
+  border-radius: var(--radius-pill);
+}

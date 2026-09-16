@@ -1,0 +1,77 @@
+/* ==========================================================================
+   Field
+   Text inputs, selects and the icon-prefixed "what are you working on" box.
+   ========================================================================== */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.field__label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+}
+
+.field__input,
+.field__select {
+  width: 100%;
+  height: var(--control-height-md);
+  padding-inline: var(--space-4);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.field__input::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.field__input:hover,
+.field__select:hover {
+  border-color: var(--color-border-strong);
+}
+
+.field__input:focus,
+.field__select:focus {
+  border-color: var(--color-accent-500);
+  outline: none;
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+}
+
+.field__select {
+  padding-inline-end: var(--space-8);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2397a0b0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6.5 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right var(--space-4) center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+/* Input with a leading icon, as in the focus panel. */
+.field--with-icon {
+  position: relative;
+}
+
+.field--with-icon .field__input {
+  padding-inline-start: var(--space-10);
+}
+
+.field__icon {
+  position: absolute;
+  top: 50%;
+  left: var(--space-4);
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--color-text-subtle);
+  transform: translateY(-50%);
+  pointer-events: none;
+}

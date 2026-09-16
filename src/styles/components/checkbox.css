@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Checkbox
+   A real <input type="checkbox"> restyled with appearance: none so keyboard
+   and screen-reader behaviour stay intact.
+   ========================================================================== */
+
+.checkbox {
+  flex: none;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  margin: 0;
+  appearance: none;
+  background-color: var(--color-surface);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 0.75rem;
+  border: 1.5px solid var(--color-border-interactive);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.checkbox:hover {
+  border-color: var(--color-accent-500);
+}
+
+.checkbox:checked {
+  background-color: var(--color-accent-600);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5 6.5 12 13 4.5'/%3E%3C/svg%3E");
+  border-color: var(--color-accent-600);
+}

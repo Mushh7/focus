@@ -1,0 +1,45 @@
+/* ==========================================================================
+   Base
+   Document-level typography and shared text roles used across components.
+   ========================================================================== */
+
+::selection {
+  background-color: var(--color-accent-100);
+  color: var(--color-accent-900);
+}
+
+.text-heading {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+}
+
+.text-title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+}
+
+.text-body {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+}
+
+.text-meta {
+  font-size: var(--text-sm);
+  color: var(--color-text-subtle);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

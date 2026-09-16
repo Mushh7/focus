@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Priority pill
+   High / Medium / Low labels on every task row.
+   ========================================================================== */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.25rem;
+  padding: var(--space-1) var(--space-4);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--pill-fg);
+  background-color: var(--pill-bg);
+  border-radius: var(--radius-pill);
+}
+
+.pill--high {
+  --pill-bg: var(--color-priority-high-bg);
+  --pill-fg: var(--color-priority-high-fg);
+}
+
+.pill--medium {
+  --pill-bg: var(--color-priority-medium-bg);
+  --pill-fg: var(--color-priority-medium-fg);
+}
+
+.pill--low {
+  --pill-bg: var(--color-priority-low-bg);
+  --pill-fg: var(--color-priority-low-fg);
+}

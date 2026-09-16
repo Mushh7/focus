@@ -1,0 +1,114 @@
+/* ==========================================================================
+   Button
+   One base class plus variants: primary (green), ghost, subtle and icon.
+   ========================================================================== */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  height: var(--control-height-md);
+  padding-inline: var(--space-5);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-normal);
+  white-space: nowrap;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast),
+    color var(--transition-fast), box-shadow var(--transition-fast),
+    transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  opacity: 0.55;
+}
+
+.button__icon {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* --- Variants ----------------------------------------------------------- */
+
+.button--primary {
+  color: var(--color-text-inverse);
+  background-color: var(--color-accent-700);
+  box-shadow: var(--shadow-accent);
+}
+
+.button--primary:hover:not(:disabled) {
+  background-color: var(--color-accent-800);
+}
+
+.button--subtle {
+  color: var(--color-text);
+  background-color: var(--color-surface-sunken);
+}
+
+.button--subtle:hover:not(:disabled) {
+  background-color: var(--color-border-strong);
+}
+
+.button--ghost {
+  color: var(--color-text-muted);
+  background-color: transparent;
+  border: 1px solid var(--color-border-strong);
+}
+
+.button--ghost:hover:not(:disabled) {
+  color: var(--color-text);
+  background-color: var(--color-surface-muted);
+}
+
+/* --- Sizes -------------------------------------------------------------- */
+
+.button--sm {
+  height: var(--control-height-sm);
+  padding-inline: var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.button--lg {
+  height: var(--control-height-lg);
+  font-size: var(--text-lg);
+  border-radius: var(--radius-lg);
+}
+
+.button--block {
+  width: 100%;
+}
+
+/* --- Icon-only buttons (row actions) ------------------------------------ */
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-button-size);
+  height: var(--icon-button-size);
+  color: var(--color-text-subtle);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.icon-button:hover {
+  color: var(--color-text);
+  background-color: var(--color-surface-sunken);
+}
+
+.icon-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.icon-button--active {
+  color: var(--color-accent-700);
+  background-color: var(--color-accent-50);
+}
