@@ -35,14 +35,17 @@ export function TaskSection({
   return (
     <section className={`task-section task-section--${meta.id}`} aria-labelledby={headingId}>
       <div className="task-section__header">
-        <div className="task-section__heading">
-          <h2 className="text-title" id={headingId}>
-            {meta.title}
-          </h2>
-          <span className="badge">
-            {openCount}
-            <span className="sr-only"> open tasks</span>
-          </span>
+        <div>
+          <div className="task-section__heading">
+            <h2 className="text-title" id={headingId}>
+              {meta.title}
+            </h2>
+            <span className="badge">
+              {openCount}
+              <span className="sr-only"> open tasks</span>
+            </span>
+          </div>
+          <p className="task-section__description">{meta.description}</p>
         </div>
 
         {meta.id === "today" ? (
@@ -56,8 +59,6 @@ export function TaskSection({
           </button>
         ) : null}
       </div>
-
-      <p className="task-section__description">{meta.description}</p>
 
       {tasks.length > 0 ? (
         <ul className="task-section__list">

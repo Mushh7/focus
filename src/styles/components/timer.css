@@ -7,15 +7,16 @@
 .focus-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
-  padding: var(--space-6);
+  gap: var(--space-5);
+  padding: var(--space-5);
 }
 
+/* Grows to fill the card so the quote card always sits at the bottom. */
 .focus-card__body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-5);
 }
 
 /* --- Progress ring ------------------------------------------------------- */
@@ -23,7 +24,7 @@
 .timer {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-4);
 }
 
 .timer__dial {
@@ -32,7 +33,7 @@
   place-items: center;
   width: var(--ring-size);
   height: var(--ring-size);
-  margin: var(--space-3) auto var(--space-1);
+  margin: var(--space-2) auto var(--space-4);
 }
 
 .timer__ring {

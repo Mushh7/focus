@@ -21,9 +21,9 @@
 .app__tasks {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-4);
   min-width: 0;
-  padding: var(--space-7);
+  padding: var(--space-5);
 }
 
 /* Right column: a slim top bar sitting on the page, then the focus card. */
@@ -51,7 +51,7 @@
 .section-stack {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
 @media (max-width: 900px) {

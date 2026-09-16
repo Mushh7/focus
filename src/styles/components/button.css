@@ -8,8 +8,8 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
-  height: var(--control-height-md);
-  padding-inline: var(--space-5);
+  height: var(--control-height-base);
+  padding-inline: var(--space-4);
   font-size: var(--text-base);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-normal);
