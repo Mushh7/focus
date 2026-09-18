@@ -1,5 +1,4 @@
 import type { SectionId, SectionMeta, Task } from "../types";
-import { AddTaskForm, type NewTaskDraft } from "./AddTaskForm";
 import { EmptyState } from "./EmptyState";
 import { TaskRow } from "./TaskRow";
 import { PlusIcon } from "./icons";
@@ -7,10 +6,7 @@ import { PlusIcon } from "./icons";
 interface TaskSectionProps {
   meta: SectionMeta;
   tasks: Task[];
-  isComposing: boolean;
   onStartComposing: (section: SectionId) => void;
-  onCancelComposing: () => void;
-  onCreate: (draft: NewTaskDraft) => void;
   onToggle: (id: string) => void;
   onRename: (id: string, title: string) => void;
   onMove: (id: string, section: SectionId) => void;
@@ -20,10 +16,7 @@ interface TaskSectionProps {
 export function TaskSection({
   meta,
   tasks,
-  isComposing,
   onStartComposing,
-  onCancelComposing,
-  onCreate,
   onToggle,
   onRename,
   onMove,
@@ -75,17 +68,13 @@ export function TaskSection({
         </ul>
       ) : null}
 
-      {tasks.length === 0 && !isComposing ? (
+      {tasks.length === 0 ? (
         <EmptyState
           title={meta.emptyTitle}
           text={meta.emptyText}
           actionLabel={`Add a task to ${meta.title}`}
           onAction={() => onStartComposing(meta.id)}
         />
-      ) : null}
-
-      {isComposing ? (
-        <AddTaskForm section={meta.id} onSubmit={onCreate} onCancel={onCancelComposing} />
       ) : null}
     </section>
   );

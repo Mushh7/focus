@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
-import type { NewTaskDraft } from "./components/AddTaskForm";
+import { AddTaskForm, type NewTaskDraft } from "./components/AddTaskForm";
 import { AsideBar, Greeting } from "./components/DashboardHeader";
 import { FocusCard } from "./components/FocusCard";
+import { Modal } from "./components/Modal";
 import { TaskSection } from "./components/TaskSection";
 import { INITIAL_TASKS, SECTIONS } from "./data/dashboard";
 import { buildDueLabel } from "./lib/format";
@@ -60,10 +61,7 @@ export default function App() {
                 key={section.id}
                 meta={section}
                 tasks={tasksBySection.get(section.id) ?? []}
-                isComposing={composingSection === section.id}
                 onStartComposing={setComposingSection}
-                onCancelComposing={() => setComposingSection(null)}
-                onCreate={createTask}
                 onToggle={toggleTask}
                 onRename={renameTask}
                 onMove={moveTask}
@@ -78,6 +76,16 @@ export default function App() {
           <FocusCard tasksDone={doneCount} tasksTotal={tasks.length} />
         </aside>
       </div>
+
+      {composingSection ? (
+        <Modal label="New task" onClose={() => setComposingSection(null)}>
+          <AddTaskForm
+            section={composingSection}
+            onSubmit={createTask}
+            onCancel={() => setComposingSection(null)}
+          />
+        </Modal>
+      ) : null}
     </div>
   );
 }

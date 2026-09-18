@@ -16,6 +16,11 @@
   color: var(--color-text-muted);
 }
 
+.field__hint {
+  font-size: var(--text-2xs);
+  color: var(--color-text-subtle);
+}
+
 .field__input,
 .field__select {
   width: 100%;
