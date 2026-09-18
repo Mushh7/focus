@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
 import { SECTIONS } from "../data/dashboard";
+import { formatEstimate } from "../lib/format";
 import { useDismissable } from "../hooks/useDismissable";
 import type { SectionId, Task } from "../types";
 import { PriorityPill } from "./PriorityPill";
@@ -71,7 +72,22 @@ export function TaskRow({ task, onToggle, onRename, onMove, onDelete }: TaskRowP
         <>
           <label className="task-row__body" htmlFor={checkboxId}>
             <span className="task-row__title">{task.title}</span>
-            {task.due ? <span className="task-row__due">{task.due}</span> : null}
+            {task.due || task.estimateMinutes ? (
+              <span className="task-row__meta">
+                {task.due ? <span className="task-row__due">{task.due}</span> : null}
+                {task.due && task.estimateMinutes ? (
+                  <span className="task-row__meta-separator" aria-hidden="true">
+                    ·
+                  </span>
+                ) : null}
+                {task.estimateMinutes ? (
+                  <span className="task-row__estimate">
+                    <span className="sr-only">Estimated time </span>
+                    {formatEstimate(task.estimateMinutes)}
+                  </span>
+                ) : null}
+              </span>
+            ) : null}
           </label>
 
           <div className="task-row__actions">

@@ -2,11 +2,14 @@ import { useId, useState } from "react";
 import { SECTIONS } from "../data/dashboard";
 import type { Priority, SectionId } from "../types";
 
+const MAX_HOURS = 23;
+
 export interface NewTaskDraft {
   title: string;
   section: SectionId;
   priority: Priority;
   time: string;
+  estimateMinutes?: number;
 }
 
 interface AddTaskFormProps {
@@ -21,6 +24,8 @@ export function AddTaskForm({ section, onSubmit, onCancel }: AddTaskFormProps) {
   const [targetSection, setTargetSection] = useState<SectionId>(section);
   const [priority, setPriority] = useState<Priority>(section === "later" ? "low" : "medium");
   const [time, setTime] = useState("");
+  const [hours, setHours] = useState("");
+  const [estimateMinutes, setEstimateMinutes] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -29,7 +34,26 @@ export function AddTaskForm({ section, onSubmit, onCancel }: AddTaskFormProps) {
       setError("Give the task a name so you know what to come back to.");
       return;
     }
-    onSubmit({ title: title.trim(), section: targetSection, priority, time });
+
+    const parsedHours = hours === "" ? 0 : Number(hours);
+    const parsedMinutes = estimateMinutes === "" ? 0 : Number(estimateMinutes);
+    if (parsedHours > MAX_HOURS) {
+      setError(`Hours can be at most ${MAX_HOURS}.`);
+      return;
+    }
+    if (parsedMinutes > 59) {
+      setError("Minutes can be at most 59.");
+      return;
+    }
+
+    const estimate = parsedHours * 60 + parsedMinutes;
+    onSubmit({
+      title: title.trim(),
+      section: targetSection,
+      priority,
+      time,
+      estimateMinutes: estimate > 0 ? estimate : undefined,
+    });
   };
 
   return (
@@ -99,6 +123,49 @@ export function AddTaskForm({ section, onSubmit, onCancel }: AddTaskFormProps) {
           onChange={(event) => setTime(event.target.value)}
         />
       </div>
+
+      <fieldset className="add-task__estimate">
+        <legend className="add-task__estimate-legend">Estimated time (optional)</legend>
+        <div className="add-task__estimate-fields">
+          <div className="field add-task__estimate-field">
+            <label className="field__label" htmlFor={`${fieldId}-hours`}>
+              Hours
+            </label>
+            <input
+              id={`${fieldId}-hours`}
+              className="field__input add-task__estimate-input"
+              type="text"
+              inputMode="numeric"
+              maxLength={2}
+              placeholder="0"
+              value={hours}
+              onChange={(event) => {
+                setHours(event.target.value.replace(/\D/g, ""));
+                setError("");
+              }}
+            />
+          </div>
+
+          <div className="field add-task__estimate-field">
+            <label className="field__label" htmlFor={`${fieldId}-minutes`}>
+              Minutes
+            </label>
+            <input
+              id={`${fieldId}-minutes`}
+              className="field__input add-task__estimate-input"
+              type="text"
+              inputMode="numeric"
+              maxLength={2}
+              placeholder="0"
+              value={estimateMinutes}
+              onChange={(event) => {
+                setEstimateMinutes(event.target.value.replace(/\D/g, ""));
+                setError("");
+              }}
+            />
+          </div>
+        </div>
+      </fieldset>
 
       {error ? (
         <p className="add-task__error" role="alert">

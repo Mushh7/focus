@@ -59,11 +59,31 @@
   text-decoration-color: var(--color-border-interactive);
 }
 
-.task-row__due {
-  display: block;
+/* Due time and estimate share one metadata line that clips rather than
+   wrapping, so the row keeps its height. */
+.task-row__meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-width: 0;
   font-size: var(--text-xs);
   line-height: var(--leading-snug);
   color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+
+.task-row__due {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task-row__estimate {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.task-row__meta-separator {
+  flex: none;
 }
 
 .task-row__actions {

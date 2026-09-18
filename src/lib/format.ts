@@ -45,6 +45,15 @@ export function buildDueLabel(section: SectionId, time: string): string | undefi
   return `Someday at ${clock}`;
 }
 
+/** 90 -> "1h 30m", 120 -> "2h", 45 -> "45m". */
+export function formatEstimate(totalMinutes: number): string {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  if (hours > 0 && minutes > 0) return `${hours}h ${minutes}m`;
+  if (hours > 0) return `${hours}h`;
+  return `${minutes}m`;
+}
+
 export function shortWeekday(date: Date): string {
   return date.toLocaleDateString("en-US", { weekday: "short" });
 }

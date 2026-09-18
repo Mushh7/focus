@@ -38,6 +38,7 @@ export default function App() {
       title: draft.title,
       due: buildDueLabel(draft.section, draft.time),
       priority: draft.priority,
+      estimateMinutes: draft.estimateMinutes,
       section: draft.section,
       done: false,
     };

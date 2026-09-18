@@ -12,6 +12,8 @@ export interface Task {
   /** Human readable due line, e.g. "Due today at 10:00 PM". Empty for someday tasks. */
   due?: string;
   priority: Priority;
+  /** Optional estimate in whole minutes. Absent when not given. */
+  estimateMinutes?: number;
   section: SectionId;
   done: boolean;
 }

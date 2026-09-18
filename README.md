@@ -39,9 +39,11 @@ Other scripts:
 
 - **Tasks** — check tasks off, rename one inline with the pencil action, move it between
   lists or delete it from the `…` menu, and add a new task from the **Add Task** button
-  (title, list, priority and an optional due time).
+  (title, list, priority, an optional due time and an optional estimate).
 - **Empty states** — clear out a list and the section shows a dashed empty card with a
   shortcut back to the composer.
+- **Estimates** — the composer takes an optional estimated time as separate hours and
+  minutes; when set it shows on the row next to the due time as `1h 30m` or `45m`.
 - **Focus timer** — start, pause, resume and reset a wall-clock-accurate countdown. The
   ring fills as the session progresses. Click the big time to type a session length from
   1 to 180 minutes; Enter or blur saves it, Escape cancels.
