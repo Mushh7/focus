@@ -96,6 +96,13 @@
   color: var(--color-text);
 }
 
+.ledger-entry__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: none;
+}
+
 .ledger-entry__rating {
   flex: none;
   font-size: var(--text-xs);

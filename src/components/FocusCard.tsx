@@ -168,7 +168,7 @@ export function FocusCard({ store, onFocusSessionChange }: FocusCardProps) {
         aria-labelledby={`tab-${tab}`}
       >
         {tab === "stats" ? (
-          <StatsPanel sessions={state.focusSessions} />
+          <StatsPanel sessions={state.focusSessions} onDeleteSession={store.deleteFocusSession} />
         ) : (
           <TimerPanel
             mode={panelMode}

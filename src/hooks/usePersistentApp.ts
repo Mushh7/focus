@@ -110,6 +110,18 @@ export function usePersistentApp() {
     [update],
   );
 
+  const deleteFocusSession = useCallback(
+    (id: string) => {
+      update((current) => ({
+        ...current,
+        focusSessions: current.focusSessions.filter((session) => session.id !== id),
+        pendingReflection:
+          current.pendingReflection?.id === id ? null : current.pendingReflection,
+      }));
+    },
+    [update],
+  );
+
   const setScratchpad = useCallback(
     (scratchpad: Thought[]) => {
       update((current) => ({ ...current, scratchpad }));
@@ -285,6 +297,7 @@ export function usePersistentApp() {
       renameTask,
       moveTask,
       deleteTask,
+      deleteFocusSession,
       setScratchpad,
       setTab,
       setDefaultMinutes,
@@ -301,6 +314,7 @@ export function usePersistentApp() {
       renameTask,
       moveTask,
       deleteTask,
+      deleteFocusSession,
       setScratchpad,
       setTab,
       setDefaultMinutes,
