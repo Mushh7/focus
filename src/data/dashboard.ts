@@ -1,4 +1,4 @@
-import type { DayFocus, Quote, SectionMeta, Task } from "../types";
+import type { FocusSessionLog, Quote, SectionMeta, Task } from "../types";
 
 export const USER = {
   firstName: "Kaden",
@@ -96,17 +96,52 @@ export const BREAK_QUOTE: Quote = {
   author: "Anne Lamott",
 };
 
-/** Focus minutes already logged before the app was opened. */
-export const SEEDED_FOCUS_MINUTES = 75;
-export const SEEDED_SESSIONS = 3;
-export const DAY_STREAK = 5;
+function atTime(daysAgo: number, hour: number, minute: number): number {
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  date.setHours(hour, minute, 0, 0);
+  return date.getTime();
+}
 
-export const WEEK_FOCUS: DayFocus[] = [
-  { day: "Mon", minutes: 75 },
-  { day: "Tue", minutes: 50 },
-  { day: "Wed", minutes: 95 },
-  { day: "Thu", minutes: 40 },
-  { day: "Fri", minutes: 110 },
-  { day: "Sat", minutes: 25 },
-  { day: "Sun", minutes: 65 },
+/** Seeded ledger so the History tab isn't empty on first load. */
+export const SEEDED_FOCUS_LOG: FocusSessionLog[] = [
+  {
+    id: "seed-cs",
+    title: "CS Problem Set",
+    focusedMinutes: 52,
+    endedAt: atTime(0, 11, 5),
+    rating: 4,
+    note: "Got through most of question 4.",
+  },
+  {
+    id: "seed-research",
+    title: "Research Paper",
+    focusedMinutes: 34,
+    endedAt: atTime(0, 14, 10),
+    rating: 5,
+    note: "Very focused, phone was away.",
+  },
+  {
+    id: "seed-resume",
+    title: "Resume",
+    focusedMinutes: 20,
+    endedAt: atTime(0, 16, 40),
+    rating: 3,
+    note: "Kept getting distracted.",
+  },
+  {
+    id: "seed-prob",
+    title: "Probability homework",
+    focusedMinutes: 78,
+    endedAt: atTime(1, 10, 30),
+    rating: 4,
+  },
+  {
+    id: "seed-intern",
+    title: "Internship applications",
+    focusedMinutes: 54,
+    endedAt: atTime(1, 16, 20),
+    rating: 3,
+    note: "Spent too much time browsing companies.",
+  },
 ];

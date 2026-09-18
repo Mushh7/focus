@@ -47,7 +47,6 @@ export default function App() {
     setComposingSection(null);
   };
 
-  const doneCount = tasks.filter((task) => task.done).length;
   const [focusSessionActive, setFocusSessionActive] = useState(false);
 
   return (
@@ -74,11 +73,7 @@ export default function App() {
 
         <aside className="app__aside">
           <AsideBar />
-          <FocusCard
-            tasksDone={doneCount}
-            tasksTotal={tasks.length}
-            onFocusSessionChange={setFocusSessionActive}
-          />
+          <FocusCard onFocusSessionChange={setFocusSessionActive} />
         </aside>
       </div>
 

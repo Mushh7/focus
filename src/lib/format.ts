@@ -56,6 +56,43 @@ export function formatEstimate(totalMinutes: number): string {
   return `${minutes}m`;
 }
 
+/** Ledger copy: "52 min", "1h 18m". */
+export function formatLedgerDuration(minutes: number): string {
+  if (minutes < 60) return `${minutes} min`;
+  return formatEstimate(minutes);
+}
+
+export function dayKey(timestamp: number): string {
+  const date = new Date(timestamp);
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
+export function formatLedgerDayLabel(timestamp: number, now = new Date()): string {
+  const date = new Date(timestamp);
+  const stamp = date.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+  const today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+  const that = new Date(date);
+  that.setHours(0, 0, 0, 0);
+  if (that.getTime() === today.getTime()) return `Today · ${stamp}`;
+  return stamp;
+}
+
+/** Monday 00:00 local of the week containing `now`. */
+export function startOfWeek(now = new Date()): Date {
+  const date = new Date(now);
+  date.setHours(0, 0, 0, 0);
+  const weekday = date.getDay();
+  date.setDate(date.getDate() - (weekday === 0 ? 6 : weekday - 1));
+  return date;
+}
+
 /** 90 -> "01:30". The inverse of the composer's HH:MM duration field. */
 export function formatDurationInput(totalMinutes: number): string {
   const hours = Math.floor(totalMinutes / 60);

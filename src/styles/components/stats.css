@@ -1,100 +1,129 @@
 /* ==========================================================================
-   Stats panel
-   Tiles plus a seven-day bar chart, shown behind the Stats tab.
+   Focus ledger
+   Compact week summary plus a day-grouped history of completed sessions.
    ========================================================================== */
 
-.stats {
+.ledger {
   display: flex;
   flex: 1;
   flex-direction: column;
   gap: var(--space-6);
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: var(--space-1);
 }
 
-.stats__grid {
+.ledger-summary {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-3) 0 var(--space-4);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.stat-tile {
-  padding: var(--space-5);
-  background-color: var(--color-surface-muted);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-}
-
-.stat-tile__value {
-  font-size: var(--text-xl);
-  font-weight: var(--weight-bold);
+.ledger-summary__value {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
   font-variant-numeric: tabular-nums;
   letter-spacing: var(--tracking-tight);
   color: var(--color-text);
 }
 
-.stat-tile__label {
-  margin-top: var(--space-1);
-  font-size: var(--text-xs);
+.ledger-summary__label {
+  margin-top: 1px;
+  font-size: var(--text-2xs);
   color: var(--color-text-subtle);
 }
 
-/* --- Weekly chart -------------------------------------------------------- */
-
-.chart {
-  padding: var(--space-5);
-  background-color: var(--color-surface-muted);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-}
-
-.chart__header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-4);
-}
-
-.chart__title {
-  font-size: var(--text-base);
+.ledger-history__title {
+  font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
+  color: var(--color-text);
 }
 
-.chart__meta {
-  font-size: var(--text-xs);
-  color: var(--color-text-subtle);
+.ledger-empty {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
 }
 
-.chart__bars {
-  display: flex;
-  gap: var(--space-3);
-  align-items: flex-end;
-  height: 7rem;
+.ledger-day {
   margin-top: var(--space-5);
 }
 
-.chart__column {
+.ledger-day__header {
   display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: var(--space-2);
-  align-items: center;
-  justify-content: flex-end;
-  height: 100%;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
 }
 
-.chart__bar {
-  width: 100%;
-  min-height: 4px;
-  height: var(--bar-height);
-  background-color: var(--color-accent-200);
-  border-radius: var(--radius-xs);
-  transition: height var(--transition-base);
+.ledger-day__date {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
 }
 
-.chart__column--today .chart__bar {
-  background-color: var(--color-accent-500);
+.ledger-day__total {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
 }
 
-.chart__day {
-  font-size: var(--text-2xs);
+.ledger-day__count {
+  font-weight: var(--weight-regular);
   color: var(--color-text-subtle);
+}
+
+.ledger-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ledger-entry__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.ledger-entry__title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.ledger-entry__rating {
+  flex: none;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent-700);
+}
+
+.ledger-entry__rating--empty {
+  color: var(--color-text-subtle);
+}
+
+.ledger-entry__duration {
+  margin-top: 1px;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+.ledger-entry__note {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  font-style: italic;
+  color: var(--color-text-subtle);
+}
+
+@media (max-width: 400px) {
+  .ledger-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-4);
+  }
 }

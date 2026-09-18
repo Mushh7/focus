@@ -19,9 +19,19 @@ export interface Task {
 }
 
 export interface SessionReflection {
+  id: string;
   title: string;
   focusedMinutes: number;
   plannedMinutes: number;
+}
+
+export interface FocusSessionLog {
+  id: string;
+  title: string;
+  focusedMinutes: number;
+  endedAt: number;
+  rating?: number;
+  note?: string;
 }
 
 export interface SectionMeta {
@@ -40,9 +50,4 @@ export interface Thought {
 export interface Quote {
   text: string;
   author: string;
-}
-
-export interface DayFocus {
-  day: string;
-  minutes: number;
 }

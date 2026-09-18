@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-  BREAK_QUOTE,
-  FOCUS_QUOTE,
-  SEEDED_FOCUS_MINUTES,
-  SEEDED_SESSIONS,
-} from "../data/dashboard";
+import { BREAK_QUOTE, FOCUS_QUOTE, SEEDED_FOCUS_LOG } from "../data/dashboard";
 import { useCountdown } from "../hooks/useCountdown";
-import type { PanelTab, SessionReflection as SessionSummary, Thought, TimerMode } from "../types";
+import type {
+  FocusSessionLog,
+  PanelTab,
+  SessionReflection as SessionSummary,
+  Thought,
+  TimerMode,
+} from "../types";
 import { Modal } from "./Modal";
 import { QuoteCard } from "./QuoteCard";
 import { SegmentedTabs } from "./SegmentedTabs";
@@ -15,19 +16,16 @@ import { StatsPanel } from "./StatsPanel";
 import { TimerPanel } from "./TimerPanel";
 
 interface FocusCardProps {
-  tasksDone: number;
-  tasksTotal: number;
   onFocusSessionChange?: (active: boolean) => void;
 }
 
-export function FocusCard({ tasksDone, tasksTotal, onFocusSessionChange }: FocusCardProps) {
+export function FocusCard({ onFocusSessionChange }: FocusCardProps) {
   const [tab, setTab] = useState<PanelTab>("focus");
   const [mode, setMode] = useState<TimerMode>("focus");
   const [minutes, setMinutes] = useState(25);
   const [intent, setIntent] = useState("");
   const [thoughts, setThoughts] = useState<Thought[]>([]);
-  const [sessions, setSessions] = useState(SEEDED_SESSIONS);
-  const [minutesFocused, setMinutesFocused] = useState(SEEDED_FOCUS_MINUTES);
+  const [log, setLog] = useState<FocusSessionLog[]>(SEEDED_FOCUS_LOG);
   const [reflection, setReflection] = useState<SessionSummary | null>(null);
 
   const handleComplete = useCallback(
@@ -35,10 +33,15 @@ export function FocusCard({ tasksDone, tasksTotal, onFocusSessionChange }: Focus
       if (mode !== "focus") return;
       const focusedMinutes =
         elapsedMinutes <= 0 ? 0 : Math.max(1, Math.round(elapsedMinutes));
-      setSessions((count) => count + 1);
-      setMinutesFocused((total) => total + focusedMinutes);
+      const id = `session-${Date.now()}`;
+      const title = intent.trim() || "Untitled session";
+      setLog((current) => [
+        ...current,
+        { id, title, focusedMinutes, endedAt: Date.now() },
+      ]);
       setReflection({
-        title: intent.trim() || "Untitled session",
+        id,
+        title,
         focusedMinutes,
         plannedMinutes: minutes,
       });
@@ -81,6 +84,19 @@ export function FocusCard({ tasksDone, tasksTotal, onFocusSessionChange }: Focus
     countdown.reset();
   };
 
+  const saveReflection = (rating: number, note: string) => {
+    if (reflection) {
+      setLog((current) =>
+        current.map((session) =>
+          session.id === reflection.id
+            ? { ...session, rating, note: note || undefined }
+            : session,
+        ),
+      );
+    }
+    closeReflection();
+  };
+
   const activeTimerTab = tab === "stats" ? mode : tab;
 
   return (
@@ -101,12 +117,7 @@ export function FocusCard({ tasksDone, tasksTotal, onFocusSessionChange }: Focus
         aria-labelledby={`tab-${tab}`}
       >
         {tab === "stats" ? (
-          <StatsPanel
-            sessions={sessions}
-            minutesFocused={minutesFocused}
-            tasksDone={tasksDone}
-            tasksTotal={tasksTotal}
-          />
+          <StatsPanel sessions={log} />
         ) : (
           <TimerPanel
             mode={activeTimerTab}
@@ -137,7 +148,7 @@ export function FocusCard({ tasksDone, tasksTotal, onFocusSessionChange }: Focus
         <Modal label="Focus session complete" onClose={closeReflection}>
           <SessionReflection
             session={reflection}
-            onSave={closeReflection}
+            onSave={saveReflection}
             onSkip={closeReflection}
           />
         </Modal>
