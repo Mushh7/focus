@@ -14,6 +14,7 @@ interface Countdown {
   progress: number;
   start: () => void;
   pause: () => void;
+  stop: () => void;
   reset: () => void;
 }
 
@@ -26,9 +27,11 @@ export function useCountdown({ minutes, onComplete }: CountdownOptions): Countdo
   const [remaining, setRemaining] = useState(total);
   const [isRunning, setIsRunning] = useState(false);
   const deadlineRef = useRef<number | null>(null);
+  const remainingRef = useRef(total);
   const completeRef = useRef(onComplete);
 
   completeRef.current = onComplete;
+  remainingRef.current = remaining;
 
   useEffect(() => {
     setIsRunning(false);
@@ -49,6 +52,7 @@ export function useCountdown({ minutes, onComplete }: CountdownOptions): Countdo
       if (left === 0) {
         setIsRunning(false);
         deadlineRef.current = null;
+        remainingRef.current = 0;
         completeRef.current?.(total / 60);
       }
     };
@@ -71,6 +75,14 @@ export function useCountdown({ minutes, onComplete }: CountdownOptions): Countdo
     deadlineRef.current = null;
   }, []);
 
+  /** Stops the clock and reports elapsed minutes without rewinding. */
+  const stop = useCallback(() => {
+    setIsRunning(false);
+    deadlineRef.current = null;
+    const elapsedMinutes = Math.max(0, (total - remainingRef.current) / 60);
+    completeRef.current?.(elapsedMinutes);
+  }, [total]);
+
   const reset = useCallback(() => {
     setIsRunning(false);
     deadlineRef.current = null;
@@ -85,6 +97,7 @@ export function useCountdown({ minutes, onComplete }: CountdownOptions): Countdo
     progress: total === 0 ? 0 : (total - remaining) / total,
     start,
     pause,
+    stop,
     reset,
   };
 }

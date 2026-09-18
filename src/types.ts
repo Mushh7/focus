@@ -18,6 +18,12 @@ export interface Task {
   done: boolean;
 }
 
+export interface SessionReflection {
+  title: string;
+  focusedMinutes: number;
+  plannedMinutes: number;
+}
+
 export interface SectionMeta {
   id: SectionId;
   title: string;

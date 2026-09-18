@@ -176,6 +176,20 @@
   flex: 1;
 }
 
+.timer__end {
+  width: 100%;
+}
+
+.focus-card--session .timer__end {
+  color: var(--color-focus-fg);
+  border-color: var(--color-focus-border);
+}
+
+.focus-card--session .timer__end:hover {
+  color: var(--color-focus-fg);
+  background-color: var(--color-focus-soft);
+}
+
 /* Replaces the session label while editing; the min-height matches that
    button so the line below the digits keeps its height. */
 .timer__hint {

@@ -24,6 +24,7 @@ interface TimerPanelProps {
   onStart: () => void;
   onPause: () => void;
   onReset: () => void;
+  onEndSession?: () => void;
 }
 
 const MODE_LABELS: Record<TimerMode, string> = {
@@ -59,6 +60,7 @@ export function TimerPanel({
   onStart,
   onPause,
   onReset,
+  onEndSession,
 }: TimerPanelProps) {
   const [isModeMenuOpen, setIsModeMenuOpen] = useState(false);
   const [draft, setDraft] = useState<string | null>(null);
@@ -232,6 +234,12 @@ export function TimerPanel({
           </button>
         ) : null}
       </div>
+
+      {isFocusSessionActive && onEndSession ? (
+        <button type="button" className="button button--ghost timer__end" onClick={onEndSession}>
+          End Session
+        </button>
+      ) : null}
 
       <Scratchpad thoughts={thoughts} onAdd={onAddThought} onDelete={onDeleteThought} />
     </div>
