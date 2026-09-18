@@ -96,10 +96,6 @@ export const BREAK_QUOTE: Quote = {
   author: "Anne Lamott",
 };
 
-/** Presets in minutes. `null` opens the custom duration input. */
-export const FOCUS_PRESETS: Array<number | null> = [25, 50, 90, null];
-export const BREAK_PRESETS: Array<number | null> = [5, 10, 15, null];
-
 /** Focus minutes already logged before the app was opened. */
 export const SEEDED_FOCUS_MINUTES = 75;
 export const SEEDED_SESSIONS = 3;

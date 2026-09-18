@@ -43,14 +43,14 @@ Other scripts:
 - **Empty states** — clear out a list and the section shows a dashed empty card with a
   shortcut back to the composer.
 - **Focus timer** — start, pause, resume and reset a wall-clock-accurate countdown. The
-  ring fills as the session progresses. 25/50/90 presets plus a custom length from 1 to
-  180 minutes.
-- **Tabs** — Focus and Break switch the timer's mode and presets; Stats shows sessions,
+  ring fills as the session progresses. Click the big time to type a session length from
+  1 to 180 minutes; Enter or blur saves it, Escape cancels.
+- **Tabs** — Focus and Break switch the timer's mode and default length; Stats shows sessions,
   minutes focused, tasks checked off and a seven-day bar chart.
 - **Responsive** — the two-column desktop grid collapses to a single column at 900px,
   with tighter spacing and a smaller ring below 560px.
 - **Accessible basics** — real buttons, inputs and labels, a restyled native checkbox,
-  `aria-selected` tabs, `aria-pressed` duration chips, visible focus rings and
+  `aria-selected` tabs, a labelled duration editor, visible focus rings and
   `prefers-reduced-motion` support.
 
 ## Project structure
@@ -59,7 +59,7 @@ Other scripts:
 src/
 ├── App.tsx                 # Task state, the two-column shell
 ├── components/             # Greeting, task sections/rows, focus card, timer, stats
-├── data/dashboard.ts       # Seed tasks, sections, quotes, presets
+├── data/dashboard.ts       # Seed tasks, sections, quotes
 ├── hooks/                  # useCountdown (wall-clock timer), useDismissable (popovers)
 ├── lib/format.ts           # Date, clock and due-label formatting
 └── styles/

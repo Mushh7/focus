@@ -1,8 +1,6 @@
 import { useCallback, useState } from "react";
 import {
-  BREAK_PRESETS,
   BREAK_QUOTE,
-  FOCUS_PRESETS,
   FOCUS_QUOTE,
   SEEDED_FOCUS_MINUTES,
   SEEDED_SESSIONS,
@@ -73,7 +71,6 @@ export function FocusCard({ tasksDone, tasksTotal }: FocusCardProps) {
           <TimerPanel
             mode={activeTimerTab}
             minutes={minutes}
-            presets={mode === "focus" ? FOCUS_PRESETS : BREAK_PRESETS}
             remaining={countdown.remaining}
             progress={countdown.progress}
             isRunning={countdown.isRunning}

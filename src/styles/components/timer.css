@@ -66,13 +66,68 @@
   gap: var(--space-3);
 }
 
-.timer__time {
+/* Fixed-width slot so swapping the readout for its editor cannot move the
+   digits. `ch` resolves against the timer font size set here. */
+.timer__time-slot {
+  display: flex;
+  justify-content: center;
+  width: 5.25ch;
   font-size: var(--text-timer);
-  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
+}
+
+/* Both states share one box height (in `em`, so it follows --text-timer at
+   every breakpoint) which is what keeps the digits from jumping. */
+.timer__time,
+.timer__time-input {
+  width: 100%;
+  height: 1.2em;
+  padding: 0;
+  font-size: inherit;
+  font-weight: var(--weight-bold);
+  font-variant-numeric: inherit;
   letter-spacing: var(--tracking-tight);
   line-height: 1;
   color: var(--color-text);
+  text-align: center;
+  background-color: transparent;
+  border-bottom: 2px solid transparent;
+}
+
+/* The idle readout is a button: hovering hints that the length is editable. */
+.timer__time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.timer__time:hover {
+  background-color: var(--color-surface-muted);
+  border-bottom-color: var(--color-border-interactive);
+}
+
+.timer__time--static {
+  cursor: default;
+}
+
+.timer__time-input {
+  appearance: none;
+  border-block-start: 0;
+  border-inline: 0;
+  border-radius: 0;
+  border-bottom-color: var(--color-accent-500);
+}
+
+.timer__time-input:focus {
+  outline: none;
+  border-bottom-color: var(--color-accent-600);
+}
+
+.timer__time-input[aria-invalid="true"] {
+  border-bottom-color: var(--color-priority-high-fg);
 }
 
 /* --- Session label menu -------------------------------------------------- */
@@ -121,7 +176,13 @@
   flex: 1;
 }
 
+/* Replaces the session label while editing; the min-height matches that
+   button so the line below the digits keeps its height. */
 .timer__hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.75rem;
   font-size: var(--text-xs);
   color: var(--color-text-subtle);
   text-align: center;

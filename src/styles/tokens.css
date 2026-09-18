@@ -127,7 +127,7 @@
   --layout-header-height: 3rem;
 
   /* --- Component sizing -------------------------------------------------- */
-  --control-height-sm: 2rem; /* 32px — chips, tabs, small buttons */
+  --control-height-sm: 2rem; /* 32px — tabs and small buttons */
   --control-height-base: 2.25rem; /* 36px — default buttons */
   --control-height-md: 2.5rem; /* 40px — inputs and selects */
   --control-height-lg: 2.75rem; /* 44px — the primary start button */

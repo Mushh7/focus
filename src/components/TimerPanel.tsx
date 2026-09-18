@@ -2,14 +2,12 @@ import { useState } from "react";
 import { useDismissable } from "../hooks/useDismissable";
 import { formatClock } from "../lib/format";
 import type { TimerMode } from "../types";
-import { DurationChips } from "./DurationChips";
 import { ProgressRing } from "./ProgressRing";
 import { ChevronDownIcon, CheckIcon, ListIcon, PauseIcon, PlayIcon, ResetIcon } from "./icons";
 
 interface TimerPanelProps {
   mode: TimerMode;
   minutes: number;
-  presets: Array<number | null>;
   remaining: number;
   progress: number;
   isRunning: boolean;
@@ -28,10 +26,19 @@ const MODE_LABELS: Record<TimerMode, string> = {
   break: "Break Time",
 };
 
+const MIN_MINUTES = 1;
+const MAX_MINUTES = 180;
+
+function parseMinutes(value: string): number | null {
+  if (!/^\d{1,3}$/.test(value.trim())) return null;
+  const parsed = Number(value);
+  if (parsed < MIN_MINUTES || parsed > MAX_MINUTES) return null;
+  return parsed;
+}
+
 export function TimerPanel({
   mode,
   minutes,
-  presets,
   remaining,
   progress,
   isRunning,
@@ -45,9 +52,27 @@ export function TimerPanel({
   onReset,
 }: TimerPanelProps) {
   const [isModeMenuOpen, setIsModeMenuOpen] = useState(false);
+  const [draft, setDraft] = useState<string | null>(null);
   const modeMenuRef = useDismissable<HTMLDivElement>(isModeMenuOpen, () =>
     setIsModeMenuOpen(false),
   );
+
+  const isEditing = draft !== null;
+  const isDraftValid = draft !== null && parseMinutes(draft) !== null;
+
+  const openEditor = () => {
+    setIsModeMenuOpen(false);
+    setDraft(String(minutes));
+  };
+
+  const commitDraft = () => {
+    if (draft === null) return false;
+    const parsed = parseMinutes(draft);
+    if (parsed === null) return false;
+    if (parsed !== minutes) onMinutesChange(parsed);
+    setDraft(null);
+    return true;
+  };
 
   const startLabel = isRunning
     ? "Pause"
@@ -60,42 +85,94 @@ export function TimerPanel({
   return (
     <div className="timer">
       <ProgressRing progress={progress} label={`${MODE_LABELS[mode]} progress`}>
-        <p className="timer__time" aria-live="off">
-          {formatClock(remaining)}
-        </p>
-        <div className="timer__mode-wrapper" ref={modeMenuRef}>
-          <button
-            type="button"
-            className="timer__mode"
-            aria-haspopup="true"
-            aria-expanded={isModeMenuOpen}
-            onClick={() => setIsModeMenuOpen((open) => !open)}
-          >
-            {MODE_LABELS[mode]}
-            <ChevronDownIcon />
-          </button>
-
-          {isModeMenuOpen ? (
-            <div className="menu__panel menu__panel--center" role="menu">
-              {(Object.keys(MODE_LABELS) as TimerMode[]).map((value) => (
-                <button
-                  key={value}
-                  type="button"
-                  className="menu__item"
-                  role="menuitemradio"
-                  aria-checked={mode === value}
-                  onClick={() => {
-                    onModeChange(value);
-                    setIsModeMenuOpen(false);
-                  }}
-                >
-                  {mode === value ? <CheckIcon /> : <span aria-hidden="true" />}
-                  {MODE_LABELS[value]}
-                </button>
-              ))}
-            </div>
-          ) : null}
+        <div className="timer__time-slot">
+          {isEditing ? (
+            <>
+              <label className="sr-only" htmlFor="timer-minutes">
+                {MODE_LABELS[mode]} length in minutes, between {MIN_MINUTES} and {MAX_MINUTES}
+              </label>
+              <input
+                id="timer-minutes"
+                className="timer__time-input"
+                type="text"
+                inputMode="numeric"
+                maxLength={3}
+                value={draft}
+                autoFocus
+                aria-invalid={!isDraftValid}
+                aria-describedby="timer-minutes-hint"
+                onFocus={(event) => event.target.select()}
+                onChange={(event) => setDraft(event.target.value.replace(/\D/g, ""))}
+                onBlur={() => {
+                  if (!commitDraft()) setDraft(null);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    commitDraft();
+                  }
+                  if (event.key === "Escape") {
+                    event.preventDefault();
+                    setDraft(null);
+                  }
+                }}
+              />
+            </>
+          ) : isRunning ? (
+            <p className="timer__time timer__time--static">{formatClock(remaining)}</p>
+          ) : (
+            <button
+              type="button"
+              className="timer__time"
+              onClick={openEditor}
+              aria-label={`${MODE_LABELS[mode]} is ${minutes} minutes. Edit the length.`}
+            >
+              {formatClock(remaining)}
+            </button>
+          )}
         </div>
+
+        {isEditing ? (
+          <p className="timer__hint" id="timer-minutes-hint" role="status">
+            {isDraftValid
+              ? "Enter to save, Esc to cancel"
+              : `Enter ${MIN_MINUTES}–${MAX_MINUTES} minutes`}
+          </p>
+        ) : (
+          <div className="timer__mode-wrapper" ref={modeMenuRef}>
+            <button
+              type="button"
+              className="timer__mode"
+              aria-haspopup="true"
+              aria-expanded={isModeMenuOpen}
+              onClick={() => setIsModeMenuOpen((open) => !open)}
+            >
+              {MODE_LABELS[mode]}
+              <ChevronDownIcon />
+            </button>
+
+            {isModeMenuOpen ? (
+              <div className="menu__panel menu__panel--center" role="menu">
+                {(Object.keys(MODE_LABELS) as TimerMode[]).map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    className="menu__item"
+                    role="menuitemradio"
+                    aria-checked={mode === value}
+                    onClick={() => {
+                      onModeChange(value);
+                      setIsModeMenuOpen(false);
+                    }}
+                  >
+                    {mode === value ? <CheckIcon /> : <span aria-hidden="true" />}
+                    {MODE_LABELS[value]}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        )}
       </ProgressRing>
 
       <div className="field field--with-icon">
@@ -139,8 +216,6 @@ export function TimerPanel({
           </button>
         ) : null}
       </div>
-
-      <DurationChips presets={presets} minutes={minutes} onChange={onMinutesChange} />
     </div>
   );
 }
