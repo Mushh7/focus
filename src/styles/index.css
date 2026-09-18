@@ -26,5 +26,6 @@
 @import "./components/empty-state.css";
 @import "./components/tabs.css";
 @import "./components/timer.css";
+@import "./components/scratchpad.css";
 @import "./components/quote-card.css";
 @import "./components/stats.css";

@@ -6,7 +6,7 @@ import {
   SEEDED_SESSIONS,
 } from "../data/dashboard";
 import { useCountdown } from "../hooks/useCountdown";
-import type { PanelTab, TimerMode } from "../types";
+import type { PanelTab, Thought, TimerMode } from "../types";
 import { QuoteCard } from "./QuoteCard";
 import { SegmentedTabs } from "./SegmentedTabs";
 import { StatsPanel } from "./StatsPanel";
@@ -22,6 +22,7 @@ export function FocusCard({ tasksDone, tasksTotal }: FocusCardProps) {
   const [mode, setMode] = useState<TimerMode>("focus");
   const [minutes, setMinutes] = useState(25);
   const [intent, setIntent] = useState("");
+  const [thoughts, setThoughts] = useState<Thought[]>([]);
   const [sessions, setSessions] = useState(SEEDED_SESSIONS);
   const [minutesFocused, setMinutesFocused] = useState(SEEDED_FOCUS_MINUTES);
 
@@ -35,6 +36,17 @@ export function FocusCard({ tasksDone, tasksTotal }: FocusCardProps) {
   );
 
   const countdown = useCountdown({ minutes, onComplete: handleComplete });
+
+  const addThought = useCallback((text: string) => {
+    setThoughts((current) => [
+      ...current,
+      { id: `thought-${Date.now()}-${current.length}`, text },
+    ]);
+  }, []);
+
+  const deleteThought = useCallback((id: string) => {
+    setThoughts((current) => current.filter((thought) => thought.id !== id));
+  }, []);
 
   const switchMode = (next: TimerMode) => {
     if (next === mode) return;
@@ -76,7 +88,10 @@ export function FocusCard({ tasksDone, tasksTotal }: FocusCardProps) {
             isRunning={countdown.isRunning}
             hasStarted={countdown.hasStarted}
             intent={intent}
+            thoughts={thoughts}
             onIntentChange={setIntent}
+            onAddThought={addThought}
+            onDeleteThought={deleteThought}
             onMinutesChange={setMinutes}
             onModeChange={switchMode}
             onStart={countdown.start}

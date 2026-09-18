@@ -1,0 +1,96 @@
+/* ==========================================================================
+   Scratchpad
+   A quiet place under the focus controls to park a distracting thought. The
+   list is height-capped and scrolls so the panel never grows past its card.
+   ========================================================================== */
+
+.scratchpad {
+  --scratchpad-list-height: 7rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background-color: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.scratchpad__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.scratchpad__title {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-subtle);
+  text-transform: uppercase;
+}
+
+.scratchpad__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding-inline: var(--space-1);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent-800);
+  background-color: var(--color-accent-100);
+  border-radius: var(--radius-pill);
+}
+
+.scratchpad__input {
+  height: var(--control-height-sm);
+  font-size: var(--text-sm);
+}
+
+.scratchpad__empty {
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+  color: var(--color-text-subtle);
+}
+
+.scratchpad__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-height: var(--scratchpad-list-height);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.scratchpad__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.scratchpad__text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.scratchpad__delete {
+  flex: none;
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.scratchpad__delete svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}

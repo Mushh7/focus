@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useDismissable } from "../hooks/useDismissable";
 import { formatClock } from "../lib/format";
-import type { TimerMode } from "../types";
+import type { Thought, TimerMode } from "../types";
 import { ProgressRing } from "./ProgressRing";
+import { Scratchpad } from "./Scratchpad";
 import { ChevronDownIcon, CheckIcon, ListIcon, PauseIcon, PlayIcon, ResetIcon } from "./icons";
 
 interface TimerPanelProps {
@@ -13,7 +14,10 @@ interface TimerPanelProps {
   isRunning: boolean;
   hasStarted: boolean;
   intent: string;
+  thoughts: Thought[];
   onIntentChange: (value: string) => void;
+  onAddThought: (text: string) => void;
+  onDeleteThought: (id: string) => void;
   onMinutesChange: (minutes: number) => void;
   onModeChange: (mode: TimerMode) => void;
   onStart: () => void;
@@ -44,7 +48,10 @@ export function TimerPanel({
   isRunning,
   hasStarted,
   intent,
+  thoughts,
   onIntentChange,
+  onAddThought,
+  onDeleteThought,
   onMinutesChange,
   onModeChange,
   onStart,
@@ -216,6 +223,8 @@ export function TimerPanel({
           </button>
         ) : null}
       </div>
+
+      <Scratchpad thoughts={thoughts} onAdd={onAddThought} onDelete={onDeleteThought} />
     </div>
   );
 }

@@ -45,6 +45,9 @@ Other scripts:
 - **Focus timer** — start, pause, resume and reset a wall-clock-accurate countdown. The
   ring fills as the session progresses. Click the big time to type a session length from
   1 to 180 minutes; Enter or blur saves it, Escape cancels.
+- **Scratchpad** — park a distracting thought mid-session without touching the timer.
+  Enter saves, each thought has its own delete button, and the list caps its height and
+  scrolls instead of stretching the panel.
 - **Tabs** — Focus and Break switch the timer's mode and default length; Stats shows sessions,
   minutes focused, tasks checked off and a seven-day bar chart.
 - **Responsive** — the two-column desktop grid collapses to a single column at 900px,

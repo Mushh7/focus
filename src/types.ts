@@ -24,6 +24,11 @@ export interface SectionMeta {
   emptyText: string;
 }
 
+export interface Thought {
+  id: string;
+  text: string;
+}
+
 export interface Quote {
   text: string;
   author: string;
