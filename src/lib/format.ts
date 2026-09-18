@@ -62,15 +62,21 @@ export function formatLedgerDuration(minutes: number): string {
   return formatEstimate(minutes);
 }
 
-export function dayKey(timestamp: number): string {
-  const date = new Date(timestamp);
+export function toTimestamp(value: string | number): number {
+  if (typeof value === "number") return value;
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+export function dayKey(value: string | number): string {
+  const date = new Date(toTimestamp(value));
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${date.getFullYear()}-${month}-${day}`;
 }
 
-export function formatLedgerDayLabel(timestamp: number, now = new Date()): string {
-  const date = new Date(timestamp);
+export function formatLedgerDayLabel(value: string | number, now = new Date()): string {
+  const date = new Date(toTimestamp(value));
   const stamp = date.toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",

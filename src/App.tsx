@@ -1,53 +1,33 @@
 import { useMemo, useState } from "react";
-import { AddTaskForm, type NewTaskDraft } from "./components/AddTaskForm";
+import { AddTaskForm } from "./components/AddTaskForm";
 import { AsideBar, Greeting } from "./components/DashboardHeader";
 import { FocusCard } from "./components/FocusCard";
 import { Modal } from "./components/Modal";
 import { TaskSection } from "./components/TaskSection";
-import { INITIAL_TASKS, SECTIONS } from "./data/dashboard";
+import { SECTIONS } from "./data/dashboard";
+import { usePersistentApp } from "./hooks/usePersistentApp";
 import { buildDueLabel } from "./lib/format";
 import type { SectionId, Task } from "./types";
 
+function visibleDue(task: Task): string | undefined {
+  if (task.dueTime) return buildDueLabel(task.section, task.dueTime);
+  return task.due;
+}
+
 export default function App() {
-  const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
+  const store = usePersistentApp();
+  const { state, createTask, toggleTask, renameTask, moveTask, deleteTask } = store;
   const [composingSection, setComposingSection] = useState<SectionId | null>(null);
   const now = useMemo(() => new Date(), []);
+  const [focusSessionActive, setFocusSessionActive] = useState(false);
 
   const tasksBySection = useMemo(() => {
     const grouped = new Map<SectionId, Task[]>(SECTIONS.map((section) => [section.id, []]));
-    for (const task of tasks) grouped.get(task.section)?.push(task);
+    for (const task of state.tasks) {
+      grouped.get(task.section)?.push({ ...task, due: visibleDue(task) });
+    }
     return grouped;
-  }, [tasks]);
-
-  const toggleTask = (id: string) =>
-    setTasks((current) =>
-      current.map((task) => (task.id === id ? { ...task, done: !task.done } : task)),
-    );
-
-  const renameTask = (id: string, title: string) =>
-    setTasks((current) => current.map((task) => (task.id === id ? { ...task, title } : task)));
-
-  const moveTask = (id: string, section: SectionId) =>
-    setTasks((current) => current.map((task) => (task.id === id ? { ...task, section } : task)));
-
-  const deleteTask = (id: string) =>
-    setTasks((current) => current.filter((task) => task.id !== id));
-
-  const createTask = (draft: NewTaskDraft) => {
-    const task: Task = {
-      id: `task-${Date.now()}`,
-      title: draft.title,
-      due: buildDueLabel(draft.section, draft.time),
-      priority: draft.priority,
-      estimateMinutes: draft.estimateMinutes,
-      section: draft.section,
-      done: false,
-    };
-    setTasks((current) => [...current, task]);
-    setComposingSection(null);
-  };
-
-  const [focusSessionActive, setFocusSessionActive] = useState(false);
+  }, [state.tasks]);
 
   return (
     <div className={focusSessionActive ? "app app--focus-active" : "app"}>
@@ -73,7 +53,7 @@ export default function App() {
 
         <aside className="app__aside">
           <AsideBar />
-          <FocusCard onFocusSessionChange={setFocusSessionActive} />
+          <FocusCard store={store} onFocusSessionChange={setFocusSessionActive} />
         </aside>
       </div>
 
@@ -81,7 +61,10 @@ export default function App() {
         <Modal label="New task" onClose={() => setComposingSection(null)}>
           <AddTaskForm
             section={composingSection}
-            onSubmit={createTask}
+            onSubmit={(draft) => {
+              createTask(draft);
+              setComposingSection(null);
+            }}
             onCancel={() => setComposingSection(null)}
           />
         </Modal>

@@ -1,13 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
-import { BREAK_QUOTE, FOCUS_QUOTE, SEEDED_FOCUS_LOG } from "../data/dashboard";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { BREAK_QUOTE, FOCUS_QUOTE } from "../data/dashboard";
+import type { PersistentApp } from "../hooks/usePersistentApp";
 import { useCountdown } from "../hooks/useCountdown";
-import type {
-  FocusSessionLog,
-  PanelTab,
-  SessionReflection as SessionSummary,
-  Thought,
-  TimerMode,
-} from "../types";
+import { createId } from "../lib/id";
+import type { PanelTab, Thought, TimerMode } from "../types";
 import { Modal } from "./Modal";
 import { QuoteCard } from "./QuoteCard";
 import { SegmentedTabs } from "./SegmentedTabs";
@@ -16,88 +12,143 @@ import { StatsPanel } from "./StatsPanel";
 import { TimerPanel } from "./TimerPanel";
 
 interface FocusCardProps {
+  store: PersistentApp;
   onFocusSessionChange?: (active: boolean) => void;
 }
 
-export function FocusCard({ onFocusSessionChange }: FocusCardProps) {
-  const [tab, setTab] = useState<PanelTab>("focus");
-  const [mode, setMode] = useState<TimerMode>("focus");
-  const [minutes, setMinutes] = useState(25);
-  const [intent, setIntent] = useState("");
-  const [thoughts, setThoughts] = useState<Thought[]>([]);
-  const [log, setLog] = useState<FocusSessionLog[]>(SEEDED_FOCUS_LOG);
-  const [reflection, setReflection] = useState<SessionSummary | null>(null);
+export function FocusCard({ store, onFocusSessionChange }: FocusCardProps) {
+  const { state } = store;
+  const [mode, setMode] = useState<TimerMode>(
+    state.preferences.activeTab === "break" ? "break" : "focus",
+  );
+  const tab = state.preferences.activeTab;
+  const active = mode === "focus" ? state.activeFocusSession : state.activeBreakSession;
+  const minutes =
+    active?.plannedDurationMinutes ??
+    (mode === "focus" ? state.preferences.defaultFocusMinutes : state.preferences.defaultBreakMinutes);
+
+  const [intent, setIntent] = useState(active?.intent ?? "");
+  const sessionIdRef = useRef<string | null>(active?.id ?? null);
+
+  const restore = useMemo(() => {
+    if (!active || active.kind !== mode) return null;
+    return {
+      remainingSeconds: Math.max(0, Math.round(active.remainingMilliseconds / 1000)),
+      isRunning: active.status === "running",
+      deadlineMs: active.endsAt ? Date.parse(active.endsAt) : null,
+    };
+  }, [active, mode]);
 
   const handleComplete = useCallback(
     (elapsedMinutes: number) => {
-      if (mode !== "focus") return;
-      const focusedMinutes =
-        elapsedMinutes <= 0 ? 0 : Math.max(1, Math.round(elapsedMinutes));
-      const id = `session-${Date.now()}`;
-      const title = intent.trim() || "Untitled session";
-      setLog((current) => [
-        ...current,
-        { id, title, focusedMinutes, endedAt: Date.now() },
-      ]);
-      setReflection({
-        id,
-        title,
-        focusedMinutes,
+      const sessionId = sessionIdRef.current ?? createId();
+      sessionIdRef.current = null;
+      if (mode === "focus") {
+        store.completeSession({
+          kind: "focus",
+          sessionId,
+          elapsedMinutes,
+          plannedMinutes: minutes,
+          intent,
+          endedEarly: elapsedMinutes + 0.05 < minutes,
+        });
+      } else {
+        store.completeSession({
+          kind: "break",
+          sessionId,
+          elapsedMinutes,
+          plannedMinutes: minutes,
+          intent,
+          endedEarly: elapsedMinutes + 0.05 < minutes,
+        });
+      }
+    },
+    [intent, minutes, mode, store],
+  );
+
+  const handlePersist = useCallback(
+    (snapshot: { remainingSeconds: number; isRunning: boolean; deadlineMs: number | null }) => {
+      const idle = !snapshot.isRunning && snapshot.remainingSeconds >= minutes * 60;
+      if (idle) {
+        sessionIdRef.current = null;
+        store.clearActive(mode);
+        return;
+      }
+      if (!sessionIdRef.current) sessionIdRef.current = createId();
+      store.persistActive(mode, snapshot, {
+        sessionId: sessionIdRef.current,
+        intent,
         plannedMinutes: minutes,
       });
     },
-    [mode, intent, minutes],
+    [intent, minutes, mode, store],
   );
 
-  const countdown = useCountdown({ minutes, onComplete: handleComplete });
+  const countdown = useCountdown({
+    minutes,
+    restoreKey: active?.id ?? null,
+    restore,
+    onComplete: handleComplete,
+    onPersist: handlePersist,
+  });
+
   const isFocusSessionActive = countdown.isRunning && mode === "focus";
 
   useEffect(() => {
     onFocusSessionChange?.(isFocusSessionActive);
   }, [isFocusSessionActive, onFocusSessionChange]);
 
-  const addThought = useCallback((text: string) => {
-    setThoughts((current) => [
-      ...current,
-      { id: `thought-${Date.now()}-${current.length}`, text },
-    ]);
-  }, []);
+  const addThought = useCallback(
+    (text: string) => {
+      const thought: Thought = {
+        id: createId(),
+        text,
+        createdAt: new Date().toISOString(),
+        sessionId: sessionIdRef.current ?? active?.id,
+      };
+      store.setScratchpad([...state.scratchpad, thought]);
+    },
+    [active?.id, state.scratchpad, store],
+  );
 
-  const deleteThought = useCallback((id: string) => {
-    setThoughts((current) => current.filter((thought) => thought.id !== id));
-  }, []);
+  const deleteThought = useCallback(
+    (id: string) => {
+      store.setScratchpad(state.scratchpad.filter((thought) => thought.id !== id));
+    },
+    [state.scratchpad, store],
+  );
 
   const switchMode = (next: TimerMode) => {
     if (next === mode) return;
+    sessionIdRef.current = null;
+    store.clearActive(mode);
     setMode(next);
-    setTab(next);
-    setMinutes(next === "focus" ? 25 : 5);
+    store.setTab(next);
+    setIntent("");
   };
 
   const handleTabChange = (next: PanelTab) => {
-    setTab(next);
+    store.setTab(next);
     if (next !== "stats") switchMode(next);
   };
 
   const closeReflection = () => {
-    setReflection(null);
+    store.skipReflection();
     countdown.reset();
   };
 
   const saveReflection = (rating: number, note: string) => {
-    if (reflection) {
-      setLog((current) =>
-        current.map((session) =>
-          session.id === reflection.id
-            ? { ...session, rating, note: note || undefined }
-            : session,
-        ),
-      );
+    if (state.pendingReflection) {
+      store.saveReflection(state.pendingReflection.id, rating, note);
     }
-    closeReflection();
+    countdown.reset();
   };
 
-  const activeTimerTab = tab === "stats" ? mode : tab;
+  const handleMinutesChange = (value: number) => {
+    if (!active) store.setDefaultMinutes(mode, value);
+  };
+
+  const panelMode: TimerMode = tab === "stats" ? mode : tab;
 
   return (
     <section
@@ -117,10 +168,10 @@ export function FocusCard({ onFocusSessionChange }: FocusCardProps) {
         aria-labelledby={`tab-${tab}`}
       >
         {tab === "stats" ? (
-          <StatsPanel sessions={log} />
+          <StatsPanel sessions={state.focusSessions} />
         ) : (
           <TimerPanel
-            mode={activeTimerTab}
+            mode={panelMode}
             minutes={minutes}
             remaining={countdown.remaining}
             progress={countdown.progress}
@@ -128,26 +179,26 @@ export function FocusCard({ onFocusSessionChange }: FocusCardProps) {
             isFocusSessionActive={isFocusSessionActive}
             hasStarted={countdown.hasStarted}
             intent={intent}
-            thoughts={thoughts}
+            thoughts={state.scratchpad}
             onIntentChange={setIntent}
             onAddThought={addThought}
             onDeleteThought={deleteThought}
-            onMinutesChange={setMinutes}
+            onMinutesChange={handleMinutesChange}
             onModeChange={switchMode}
             onStart={countdown.start}
             onPause={countdown.pause}
             onReset={countdown.reset}
-            onEndSession={countdown.stop}
+            onEndSession={mode === "focus" ? countdown.stop : undefined}
           />
         )}
       </div>
 
       <QuoteCard quote={mode === "focus" ? FOCUS_QUOTE : BREAK_QUOTE} />
 
-      {reflection ? (
+      {state.pendingReflection ? (
         <Modal label="Focus session complete" onClose={closeReflection}>
           <SessionReflection
-            session={reflection}
+            session={state.pendingReflection}
             onSave={saveReflection}
             onSkip={closeReflection}
           />

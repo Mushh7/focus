@@ -1,4 +1,4 @@
-import type { FocusSessionLog, Quote, SectionMeta, Task } from "../types";
+import type { Quote, SectionMeta, Task } from "../types";
 
 export const USER = {
   firstName: "Kaden",
@@ -30,30 +30,38 @@ export const SECTIONS: SectionMeta[] = [
   },
 ];
 
+const SEEDED_AT = "2026-09-18T16:00:00.000Z";
+
 export const INITIAL_TASKS: Task[] = [
   {
     id: "task-seminar",
     title: "Seminar discussion hw",
-    due: "Due today at 10:00 PM",
+    dueTime: "22:00",
     priority: "high",
     section: "today",
     done: false,
+    createdAt: SEEDED_AT,
+    updatedAt: SEEDED_AT,
   },
   {
     id: "task-chapter",
     title: "Read chapter 6",
-    due: "Due today at 5:00 PM",
+    dueTime: "17:00",
     priority: "medium",
     section: "today",
     done: false,
+    createdAt: SEEDED_AT,
+    updatedAt: SEEDED_AT,
   },
   {
     id: "task-cs",
     title: "CS hw",
-    due: "Due tomorrow at 10:00 AM",
+    dueTime: "10:00",
     priority: "high",
     section: "upcoming",
     done: false,
+    createdAt: SEEDED_AT,
+    updatedAt: SEEDED_AT,
   },
   {
     id: "task-lab",
@@ -62,6 +70,8 @@ export const INITIAL_TASKS: Task[] = [
     priority: "medium",
     section: "upcoming",
     done: false,
+    createdAt: SEEDED_AT,
+    updatedAt: SEEDED_AT,
   },
   {
     id: "task-resume",
@@ -69,6 +79,8 @@ export const INITIAL_TASKS: Task[] = [
     priority: "low",
     section: "later",
     done: false,
+    createdAt: SEEDED_AT,
+    updatedAt: SEEDED_AT,
   },
   {
     id: "task-summer",
@@ -76,6 +88,8 @@ export const INITIAL_TASKS: Task[] = [
     priority: "low",
     section: "later",
     done: false,
+    createdAt: SEEDED_AT,
+    updatedAt: SEEDED_AT,
   },
   {
     id: "task-options",
@@ -83,6 +97,8 @@ export const INITIAL_TASKS: Task[] = [
     priority: "low",
     section: "later",
     done: false,
+    createdAt: SEEDED_AT,
+    updatedAt: SEEDED_AT,
   },
 ];
 
@@ -95,53 +111,3 @@ export const BREAK_QUOTE: Quote = {
   text: "Almost everything will work again if you unplug it for a few minutes, including you.",
   author: "Anne Lamott",
 };
-
-function atTime(daysAgo: number, hour: number, minute: number): number {
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  date.setHours(hour, minute, 0, 0);
-  return date.getTime();
-}
-
-/** Seeded ledger so the History tab isn't empty on first load. */
-export const SEEDED_FOCUS_LOG: FocusSessionLog[] = [
-  {
-    id: "seed-cs",
-    title: "CS Problem Set",
-    focusedMinutes: 52,
-    endedAt: atTime(0, 11, 5),
-    rating: 4,
-    note: "Got through most of question 4.",
-  },
-  {
-    id: "seed-research",
-    title: "Research Paper",
-    focusedMinutes: 34,
-    endedAt: atTime(0, 14, 10),
-    rating: 5,
-    note: "Very focused, phone was away.",
-  },
-  {
-    id: "seed-resume",
-    title: "Resume",
-    focusedMinutes: 20,
-    endedAt: atTime(0, 16, 40),
-    rating: 3,
-    note: "Kept getting distracted.",
-  },
-  {
-    id: "seed-prob",
-    title: "Probability homework",
-    focusedMinutes: 78,
-    endedAt: atTime(1, 10, 30),
-    rating: 4,
-  },
-  {
-    id: "seed-intern",
-    title: "Internship applications",
-    focusedMinutes: 54,
-    endedAt: atTime(1, 16, 20),
-    rating: 3,
-    note: "Spent too much time browsing companies.",
-  },
-];

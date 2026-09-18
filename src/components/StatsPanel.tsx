@@ -4,6 +4,7 @@ import {
   formatLedgerDayLabel,
   formatLedgerDuration,
   startOfWeek,
+  toTimestamp,
 } from "../lib/format";
 import type { FocusSessionLog } from "../types";
 
@@ -41,14 +42,16 @@ function groupByDay(sessions: FocusSessionLog[], now: Date): DayGroup[] {
     .sort((a, b) => b.key.localeCompare(a.key, undefined, { numeric: true }))
     .map((group) => ({
       ...group,
-      sessions: [...group.sessions].sort((a, b) => a.endedAt - b.endedAt),
+      sessions: [...group.sessions].sort(
+        (a, b) => toTimestamp(a.endedAt) - toTimestamp(b.endedAt),
+      ),
     }));
 }
 
 export function StatsPanel({ sessions }: StatsPanelProps) {
   const now = useMemo(() => new Date(), []);
   const weekStart = startOfWeek(now).getTime();
-  const thisWeek = sessions.filter((session) => session.endedAt >= weekStart);
+  const thisWeek = sessions.filter((session) => toTimestamp(session.endedAt) >= weekStart);
   const weekMinutes = thisWeek.reduce((sum, session) => sum + session.focusedMinutes, 0);
   const rated = thisWeek.filter((session) => session.rating !== undefined);
   const averageRating =
