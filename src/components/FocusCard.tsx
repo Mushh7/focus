@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   BREAK_QUOTE,
   FOCUS_QUOTE,
@@ -15,9 +15,10 @@ import { TimerPanel } from "./TimerPanel";
 interface FocusCardProps {
   tasksDone: number;
   tasksTotal: number;
+  onFocusSessionChange?: (active: boolean) => void;
 }
 
-export function FocusCard({ tasksDone, tasksTotal }: FocusCardProps) {
+export function FocusCard({ tasksDone, tasksTotal, onFocusSessionChange }: FocusCardProps) {
   const [tab, setTab] = useState<PanelTab>("focus");
   const [mode, setMode] = useState<TimerMode>("focus");
   const [minutes, setMinutes] = useState(25);
@@ -36,6 +37,11 @@ export function FocusCard({ tasksDone, tasksTotal }: FocusCardProps) {
   );
 
   const countdown = useCountdown({ minutes, onComplete: handleComplete });
+  const isFocusSessionActive = countdown.isRunning && mode === "focus";
+
+  useEffect(() => {
+    onFocusSessionChange?.(isFocusSessionActive);
+  }, [isFocusSessionActive, onFocusSessionChange]);
 
   const addThought = useCallback((text: string) => {
     setThoughts((current) => [
@@ -63,7 +69,14 @@ export function FocusCard({ tasksDone, tasksTotal }: FocusCardProps) {
   const activeTimerTab = tab === "stats" ? mode : tab;
 
   return (
-    <section className="card app__aside-card focus-card" aria-label="Focus timer">
+    <section
+      className={
+        isFocusSessionActive
+          ? "card app__aside-card focus-card focus-card--session"
+          : "card app__aside-card focus-card"
+      }
+      aria-label="Focus timer"
+    >
       <SegmentedTabs active={tab} onChange={handleTabChange} />
 
       <div
@@ -86,6 +99,7 @@ export function FocusCard({ tasksDone, tasksTotal }: FocusCardProps) {
             remaining={countdown.remaining}
             progress={countdown.progress}
             isRunning={countdown.isRunning}
+            isFocusSessionActive={isFocusSessionActive}
             hasStarted={countdown.hasStarted}
             intent={intent}
             thoughts={thoughts}

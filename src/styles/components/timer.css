@@ -187,3 +187,88 @@
   color: var(--color-text-subtle);
   text-align: center;
 }
+
+/* --- Live focus session -------------------------------------------------- */
+
+.timer__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  gap: var(--space-2);
+  min-height: 1.75rem;
+  padding: var(--space-1) var(--space-4);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  color: var(--color-focus-fg);
+  background-color: var(--color-focus-soft);
+  border-radius: var(--radius-pill);
+}
+
+.timer__status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--color-focus-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 var(--color-focus-glow);
+  animation: focus-dot-breathe 2.8s ease-in-out infinite;
+}
+
+.focus-card--session {
+  background-color: var(--color-focus-surface);
+  border-color: var(--color-focus-border);
+  box-shadow: 0 0 0 1px var(--color-focus-border), 0 0 22px var(--color-focus-glow-soft);
+  animation: focus-panel-breathe 5.5s ease-in-out infinite;
+}
+
+.focus-card--session .timer__ring-progress {
+  stroke: var(--color-focus-accent);
+}
+
+.focus-card--session .tabs {
+  border-color: var(--color-focus-border);
+  background-color: var(--color-focus-surface);
+}
+
+.focus-card--session .tabs__tab[aria-selected="true"] {
+  color: var(--color-focus-fg);
+  background-color: var(--color-focus-soft);
+}
+
+.focus-card--session .tabs__tab[aria-selected="true"] .tabs__icon {
+  color: var(--color-focus-accent);
+}
+
+.focus-card--session .button--primary {
+  background-color: var(--color-focus-button);
+  box-shadow: var(--shadow-focus);
+}
+
+.focus-card--session .button--primary:hover:not(:disabled) {
+  background-color: var(--color-focus-button-hover);
+}
+
+@keyframes focus-panel-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px var(--color-focus-border), 0 0 18px var(--color-focus-glow-soft);
+  }
+
+  50% {
+    box-shadow: 0 0 0 2px var(--color-focus-border-strong), 0 0 34px var(--color-focus-glow);
+  }
+}
+
+@keyframes focus-dot-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 var(--color-focus-glow);
+  }
+
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 0 6px transparent;
+  }
+}

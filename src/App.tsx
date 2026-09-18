@@ -48,9 +48,10 @@ export default function App() {
   };
 
   const doneCount = tasks.filter((task) => task.done).length;
+  const [focusSessionActive, setFocusSessionActive] = useState(false);
 
   return (
-    <div className="app">
+    <div className={focusSessionActive ? "app app--focus-active" : "app"}>
       <div className="app__grid">
         <main className="card app__tasks">
           <Greeting now={now} />
@@ -73,7 +74,11 @@ export default function App() {
 
         <aside className="app__aside">
           <AsideBar />
-          <FocusCard tasksDone={doneCount} tasksTotal={tasks.length} />
+          <FocusCard
+            tasksDone={doneCount}
+            tasksTotal={tasks.length}
+            onFocusSessionChange={setFocusSessionActive}
+          />
         </aside>
       </div>
 

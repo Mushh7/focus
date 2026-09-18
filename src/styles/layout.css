@@ -3,9 +3,18 @@
    The app shell: page padding, the two-column grid and the column stacks.
    ========================================================================== */
 
+body:has(.app--focus-active) {
+  background-color: var(--color-focus-page);
+  transition: background-color var(--transition-slow);
+}
+
 .app {
   min-height: 100vh;
   padding: var(--layout-gutter);
+}
+
+.app--focus-active {
+  background-color: var(--color-focus-page);
 }
 
 .app__grid {

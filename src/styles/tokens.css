@@ -33,6 +33,20 @@
   --color-accent-50: #e8f4ee;
 
   /* --- Palette: priority levels ----------------------------------------- */
+  /* --- Palette: live focus session -------------------------------------- */
+  --color-focus-page: #f6ecec;
+  --color-focus-surface: #fff7f6;
+  --color-focus-border: #e7b3af;
+  --color-focus-border-strong: #d98984;
+  --color-focus-accent: #c83c3c;
+  --color-focus-fg: #9f2424;
+  --color-focus-soft: #f8dede;
+  --color-focus-button: #b8281f;
+  --color-focus-button-hover: #9a1f18;
+  --color-focus-glow-soft: rgba(184, 40, 31, 0.16);
+  --color-focus-glow: rgba(184, 40, 31, 0.38);
+  --shadow-focus: 0 10px 22px -12px rgba(184, 40, 31, 0.5);
+
   --color-priority-high-bg: #fde0e1;
   --color-priority-high-fg: #b8281f;
   --color-priority-medium-bg: #fdf0d2;

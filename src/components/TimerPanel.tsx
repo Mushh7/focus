@@ -12,6 +12,7 @@ interface TimerPanelProps {
   remaining: number;
   progress: number;
   isRunning: boolean;
+  isFocusSessionActive: boolean;
   hasStarted: boolean;
   intent: string;
   thoughts: Thought[];
@@ -46,6 +47,7 @@ export function TimerPanel({
   remaining,
   progress,
   isRunning,
+  isFocusSessionActive,
   hasStarted,
   intent,
   thoughts,
@@ -181,6 +183,13 @@ export function TimerPanel({
           </div>
         )}
       </ProgressRing>
+
+      {isFocusSessionActive ? (
+        <p className="timer__status" role="status" aria-live="polite">
+          <span className="timer__status-dot" aria-hidden="true" />
+          FOCUS MODE ACTIVE
+        </p>
+      ) : null}
 
       <div className="field field--with-icon">
         <label className="sr-only" htmlFor="focus-intent">
